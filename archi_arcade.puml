@@ -1,0 +1,106 @@
+@startuml
+
+namespace Core {
+    class Arcade {
+        # Arcade(std::string lib = "arcade_ncurses.so")
+        # ~Arcade()
+
+        + bool start()
+        + bool startMenu()
+        + bool startGame(std::string name)
+        + void reloadToMenu()
+
+        + void clearLib()
+        + void loadLib()
+
+        - std::string _name
+        - std::string _lib
+
+        - std::unique_ptr<Graphic::IGraphic> _graphic
+        - std::unique_ptr<Game::IGame> _game
+    }
+}
+
+namespace Game {
+    class IGame {
+        # IGame() = default
+        # ~IGame() = default
+
+        + void finishGame() virtual = default
+        + bool starGame() virtual = default
+    }
+
+    class AGame {
+        # AGame()
+        # ~AGame()
+
+        + void finishGame() override
+        + bool starGame() override
+
+        - std::map<Int, Int> _position
+        - bool _gameIsRunning
+    }
+
+    class Snake {
+        # Snake()
+        # ~Snake()
+
+        - std::vector<Int> _snake
+        - std::vector<Int> _food
+    }
+
+    class Pacman {
+        # Pacman()
+        # ~Pacman()
+
+        - std::vector<Int> _pacman
+        - std::vector<Int> _ghost
+    }
+
+    class Menu {
+        # Menu()
+        # ~Menu()
+
+        + void initMenu()
+        + std::string getGameName()
+
+        - std::string _gameName
+    }
+
+    IGame --|> AGame
+    AGame --|> Snake
+    AGame --|> Pacman
+    AGame --|> Menu
+}
+
+namespace Graphic {
+    class IGraphic {
+        # IGraphic() = default
+        # ~IGraphic() = default
+
+    }
+
+    class AGraphic {
+        # AGraphic() = default
+        # ~AGraphic() = default
+    }
+
+    class Ncurses {
+
+    }
+
+    class SDL {
+
+    }
+
+    class SFML {
+
+    }
+
+    IGraphic --|> AGraphic
+    AGraphic --|> Ncurses
+    AGraphic --|> SDL
+    AGraphic --|> SFML
+}
+
+@enduml
